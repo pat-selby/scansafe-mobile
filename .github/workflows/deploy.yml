@@ -1,0 +1,63 @@
+name: Deploy web preview to GitHub Pages
+
+# The web build is a preview surface for reviewing the UI on a real phone.
+# Android and iOS are the release targets — see docs/prd.md.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.3
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      # The parity corpus and widget tests gate the deploy. A drift in the
+      # rule engine must never reach a URL people are shown.
+      - name: Test
+        run: flutter test
+
+      - name: Build web
+        # base-href must match the repository name for project Pages, or every
+        # asset 404s.
+        run: flutter build web --release --no-tree-shake-icons --base-href /scansafe-mobile/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

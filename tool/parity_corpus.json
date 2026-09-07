@@ -1,0 +1,338 @@
+[
+  {
+    "url": "https://google.com",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "example.com",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "http://example.com",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      1
+    ]
+  },
+  {
+    "url": "http://192.168.1.1/login",
+    "score": 8,
+    "level": "HIGH RISK",
+    "rules": [
+      1,
+      2,
+      16,
+      17
+    ]
+  },
+  {
+    "url": "https://free-gift.xyz",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      3
+    ]
+  },
+  {
+    "url": "https://news.ru",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      4
+    ]
+  },
+  {
+    "url": "https://a.b.c.d.e.example.com",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      5
+    ]
+  },
+  {
+    "url": "https://example.com/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/seg/",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      6
+    ]
+  },
+  {
+    "url": "https://example.com/p?a=1&b=2&c=3&d=4&e=5&f=6",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      7
+    ]
+  },
+  {
+    "url": "https://paypal.fakesite.com",
+    "score": 3,
+    "level": "SUSPICIOUS",
+    "rules": [
+      8
+    ]
+  },
+  {
+    "url": "https://bit.ly/3xAbCd",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      9
+    ]
+  },
+  {
+    "url": "https://example.com@evil.com/path",
+    "score": 3,
+    "level": "SUSPICIOUS",
+    "rules": [
+      10
+    ]
+  },
+  {
+    "url": "https://xn--80ak6aa92e.com",
+    "score": 4,
+    "level": "SUSPICIOUS",
+    "rules": [
+      11,
+      16
+    ]
+  },
+  {
+    "url": "https://example.com/invoice.pdf.exe",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      12
+    ]
+  },
+  {
+    "url": "https://na01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fevil.tk%2Flogin",
+    "score": 14,
+    "level": "HIGH RISK",
+    "rules": [
+      5,
+      13,
+      17,
+      18
+    ]
+  },
+  {
+    "url": "javascript:alert(1)",
+    "score": 8,
+    "level": "HIGH RISK",
+    "rules": [
+      14,
+      21
+    ]
+  },
+  {
+    "url": "blob:https://evil.com/2f8a-uuid",
+    "score": 6,
+    "level": "HIGH RISK",
+    "rules": [
+      14
+    ]
+  },
+  {
+    "url": "data:text/html,hello",
+    "score": 6,
+    "level": "HIGH RISK",
+    "rules": [
+      14
+    ]
+  },
+  {
+    "url": "https://xkcdvbnmqz.com",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      15
+    ]
+  },
+  {
+    "url": "https://abc123456.com",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      16
+    ]
+  },
+  {
+    "url": "https://example.com/login",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      17
+    ]
+  },
+  {
+    "url": "https://example.com/p?x=%41%42%43%44%45",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      18
+    ]
+  },
+  {
+    "url": "https://paypa1.com",
+    "score": 3,
+    "level": "SUSPICIOUS",
+    "rules": [
+      19
+    ]
+  },
+  {
+    "url": "https://grarnbling.edu",
+    "score": 4,
+    "level": "SUSPICIOUS",
+    "rules": [
+      15,
+      19
+    ]
+  },
+  {
+    "url": "https://arnazon.com",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://ivoryrobinson94.wixsite.com/0ne-dr1ve",
+    "score": 6,
+    "level": "HIGH RISK",
+    "rules": [
+      19,
+      22
+    ]
+  },
+  {
+    "url": "https://example.com/verify-now",
+    "score": 4,
+    "level": "SUSPICIOUS",
+    "rules": [
+      17,
+      21
+    ]
+  },
+  {
+    "url": "https://acm-grambling.github.io",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://acm-grambling.github.io/events",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://docs.google.com/document/d/abc",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://grambling.edu",
+    "score": 1,
+    "level": "SAFE",
+    "rules": [
+      15
+    ]
+  },
+  {
+    "url": "https://secure-chase-login.tk/account/verify",
+    "score": 7,
+    "level": "HIGH RISK",
+    "rules": [
+      3,
+      8,
+      17
+    ]
+  },
+  {
+    "url": "https://my.site.vercel.app/paypa1",
+    "score": 6,
+    "level": "HIGH RISK",
+    "rules": [
+      19,
+      22
+    ]
+  },
+  {
+    "url": "https://tinyurl.com/abcd",
+    "score": 2,
+    "level": "SAFE",
+    "rules": [
+      9
+    ]
+  },
+  {
+    "url": "http://10.0.0.5:8080/admin/password",
+    "score": 7,
+    "level": "HIGH RISK",
+    "rules": [
+      1,
+      2,
+      17
+    ]
+  },
+  {
+    "url": "https://office365-login.click/auth?token=abc",
+    "score": 8,
+    "level": "HIGH RISK",
+    "rules": [
+      3,
+      8,
+      16,
+      17
+    ]
+  },
+  {
+    "url": "https://www.grambling.edu/admissions",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://www.instagram.com",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://www.grambling.edu/academics/colleges/college-of-business",
+    "score": 0,
+    "level": "SAFE",
+    "rules": []
+  },
+  {
+    "url": "https://grarnbling.edu/student/login",
+    "score": 6,
+    "level": "HIGH RISK",
+    "rules": [
+      15,
+      17,
+      19
+    ]
+  },
+  {
+    "url": "http://xn--pypal-4ve.xyz/signin/verify?action=urgent",
+    "score": 12,
+    "level": "HIGH RISK",
+    "rules": [
+      1,
+      3,
+      11,
+      15,
+      17,
+      21
+    ]
+  }
+]

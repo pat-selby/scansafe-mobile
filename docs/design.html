@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScanSafe — Design System</title>
+<style>
+  :root{
+    --background:#000000; --on-background:#FAFAFA;
+    --surface:#141414; --on-surface:#F5F5F5;
+    --surface-variant:#1E1E1E; --on-surface-variant:#8A8A8A;
+    --outline:#2A2A2A; --outline-strong:#3D3D3D;
+    --primary:#2FE98A; --on-primary:#04160D;
+    --success:#2FE98A; --success-container:#0C2A1B; --on-success-container:#7CF3BB;
+    --warning:#FFC933; --warning-container:#2E2408; --on-warning-container:#FFDD84;
+    --error:#FF4038; --error-container:#2E0F0D; --on-error-container:#FF9C97;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --xs:4px; --sm:8px; --md:12px; --lg:16px; --xl:24px; --xxl:32px;
+    --r-sm:8px; --r-md:12px; --r-lg:18px; --r-pill:999px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--background);color:var(--on-background);
+       font-family:var(--sans);line-height:1.5;padding:var(--xl) var(--lg) 64px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:26px;font-weight:700;letter-spacing:-.01em;margin:0 0 var(--xs)}
+  .sub{color:var(--on-surface-variant);margin:0 0 var(--xxl);font-size:15px}
+  h2{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--on-surface-variant);margin:var(--xxl) 0 var(--md)}
+  .card{background:var(--surface);border:1px solid var(--outline);
+        border-radius:var(--r-lg);padding:var(--lg);margin-bottom:var(--md)}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sm)}
+  .sw{border:1px solid var(--outline);border-radius:var(--r-md);overflow:hidden}
+  .sw .chip{height:56px}
+  .sw .meta{padding:var(--sm) var(--md);background:var(--surface)}
+  .sw .name{font-size:12px;font-weight:600}
+  .sw .hex{font-family:var(--mono);font-size:11px;color:var(--on-surface-variant)}
+  .verdict{display:flex;align-items:center;gap:var(--md);border-radius:var(--r-lg);
+           padding:var(--lg);margin-bottom:var(--sm);font-size:34px;font-weight:800;
+           letter-spacing:-.01em;line-height:1.1}
+  .verdict small{font-family:var(--sans);font-size:14px;font-weight:400;opacity:.85;
+                 letter-spacing:0}
+  .v-safe{background:var(--success-container);color:var(--success)}
+  .v-susp{background:var(--warning-container);color:var(--warning)}
+  .v-high{background:var(--error-container);color:var(--error)}
+  .btn{display:flex;align-items:center;justify-content:center;width:100%;
+       border-radius:var(--r-md);font-size:17px;font-weight:700;margin-bottom:var(--sm);
+       border:none;font-family:var(--sans)}
+  .btn-primary{background:var(--primary);color:var(--on-primary);height:52px}
+  .btn-disabled{background:var(--surface-variant);color:var(--on-surface-variant);height:52px}
+  .btn-scan{background:var(--success-container);color:var(--primary);height:56px;
+            border:2px dashed var(--primary)}
+  .input{background:var(--surface-variant);color:var(--on-surface);height:56px;
+         border-radius:var(--r-md);border:1px solid var(--outline);
+         padding:0 var(--lg);display:flex;align-items:center;font-size:16px}
+  .mono{font-family:var(--mono)}
+  .url{background:var(--surface-variant);border-radius:var(--r-sm);padding:var(--md);
+       font-family:var(--mono);font-size:14px;color:var(--on-surface-variant);
+       overflow-x:auto;white-space:nowrap}
+  .detail{background:var(--surface-variant);border-radius:var(--r-sm);padding:var(--md);
+          font-family:var(--mono);font-size:13px;line-height:1.55;
+          color:var(--on-surface-variant);margin-top:var(--sm)}
+  .finding{border-bottom:1px solid var(--outline);padding:var(--md) 0}
+  .finding:last-child{border-bottom:none}
+  .finding .row{display:flex;gap:var(--md);align-items:flex-start}
+  .finding .w{font-family:var(--mono);font-size:13px;color:var(--on-surface-variant)}
+  .link{color:var(--primary);font-size:15px;margin-top:var(--sm);display:inline-block}
+  .type-row{display:flex;justify-content:space-between;align-items:baseline;gap:var(--lg);
+            padding:var(--md) 0;border-bottom:1px solid var(--outline)}
+  .type-row:last-child{border-bottom:none}
+  .type-meta{font-family:var(--mono);font-size:11px;color:var(--on-surface-variant);
+             white-space:nowrap}
+  .scale{display:flex;align-items:flex-end;gap:var(--sm);flex-wrap:wrap}
+  .scale div{background:var(--primary);border-radius:2px;width:32px}
+  .scale span{display:block;font-family:var(--mono);font-size:10px;
+              color:var(--on-surface-variant);text-align:center;margin-top:var(--xs)}
+  .shapes{display:flex;gap:var(--md);flex-wrap:wrap}
+  .shape{width:84px;height:84px;background:var(--surface-variant);
+         border:1px solid var(--outline-strong);display:flex;align-items:center;
+         justify-content:center;font-family:var(--mono);font-size:11px;
+         color:var(--on-surface-variant)}
+  ul{margin:0;padding-left:20px}
+  li{margin-bottom:var(--sm);font-size:15px}
+  .dos li::marker{color:var(--success)}
+  .donts li::marker{color:var(--error)}
+  .pill{display:inline-flex;align-items:center;gap:var(--sm);border-radius:var(--r-pill);
+        padding:6px 12px;font-size:13px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ScanSafe — Design System</h1>
+  <p class="sub">Live mirror of <span class="mono">docs/design.md</span>. Every value below is rendered from the same tokens the app implements. Derived from the Flask prototype screenshots.</p>
+
+  <h2>Verdict colours</h2>
+  <div class="verdict v-safe">SAFE <small>score 0</small></div>
+  <div class="verdict v-susp">SUSPICIOUS <small>score 5</small></div>
+  <div class="verdict v-high">HIGH RISK <small>score 8</small></div>
+  <div class="card" style="margin-top:var(--md)">
+    <p style="margin:0;font-size:15px;color:var(--on-surface-variant)">These three colours mean exactly one thing each and are never used decoratively. Each verdict also carries an icon and a text label in the app, so meaning survives greyscale and colour-blindness.</p>
+  </div>
+
+  <h2>Palette</h2>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#000000"></div><div class="meta"><div class="name">background</div><div class="hex">#000000</div></div></div>
+    <div class="sw"><div class="chip" style="background:#141414"></div><div class="meta"><div class="name">surface</div><div class="hex">#141414</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1E1E1E"></div><div class="meta"><div class="name">surface-variant</div><div class="hex">#1E1E1E</div></div></div>
+    <div class="sw"><div class="chip" style="background:#2A2A2A"></div><div class="meta"><div class="name">outline</div><div class="hex">#2A2A2A</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FAFAFA"></div><div class="meta"><div class="name">on-background</div><div class="hex">#FAFAFA</div></div></div>
+    <div class="sw"><div class="chip" style="background:#8A8A8A"></div><div class="meta"><div class="name">on-surface-variant</div><div class="hex">#8A8A8A</div></div></div>
+    <div class="sw"><div class="chip" style="background:#2FE98A"></div><div class="meta"><div class="name">primary / success</div><div class="hex">#2FE98A</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FFC933"></div><div class="meta"><div class="name">warning</div><div class="hex">#FFC933</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FF4038"></div><div class="meta"><div class="name">error</div><div class="hex">#FF4038</div></div></div>
+  </div>
+
+  <h2>Typography</h2>
+  <div class="card">
+    <div class="type-row"><span style="font-size:34px;font-weight:800;letter-spacing:-.01em">HIGH RISK</span><span class="type-meta">verdict · 34/800</span></div>
+    <div class="type-row"><span style="font-size:26px;font-weight:700;letter-spacing:-.01em">Check a link</span><span class="type-meta">headline · 26/700</span></div>
+    <div class="type-row"><span style="font-size:18px;font-weight:600">3 findings</span><span class="type-meta">title · 18/600</span></div>
+    <div class="type-row"><span style="font-size:16px">This link uses HTTP, not HTTPS.</span><span class="type-meta">body · 16/400</span></div>
+    <div class="type-row"><span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--on-surface-variant)">PLAIN-ENGLISH SUMMARY</span><span class="type-meta">label-caps · 12/700</span></div>
+    <div class="type-row"><span class="mono" style="font-size:14px">https://paypa1.com/login</span><span class="type-meta">mono-url · 14/400</span></div>
+    <div class="type-row"><span class="mono" style="font-size:13px;color:var(--on-surface-variant)">Rule 19: LCS similarity = 0.833</span><span class="type-meta">mono-detail · 13/400</span></div>
+  </div>
+
+  <h2>Spacing scale</h2>
+  <div class="card">
+    <div class="scale">
+      <div><div style="height:4px"></div><span>4</span></div>
+      <div><div style="height:8px"></div><span>8</span></div>
+      <div><div style="height:12px"></div><span>12</span></div>
+      <div><div style="height:16px"></div><span>16</span></div>
+      <div><div style="height:24px"></div><span>24</span></div>
+      <div><div style="height:32px"></div><span>32</span></div>
+    </div>
+  </div>
+
+  <h2>Shapes</h2>
+  <div class="shapes">
+    <div class="shape" style="border-radius:8px">sm 8</div>
+    <div class="shape" style="border-radius:12px">md 12</div>
+    <div class="shape" style="border-radius:18px">lg 18</div>
+    <div class="shape" style="border-radius:999px">pill</div>
+  </div>
+
+  <h2>Buttons &amp; inputs</h2>
+  <div class="card">
+    <div class="btn btn-primary">Scan this link</div>
+    <div class="btn btn-scan">Scan a QR code</div>
+    <div class="btn btn-disabled">Scan this link</div>
+    <div class="input" style="margin-top:var(--md);color:var(--on-surface-variant)">example.com/login</div>
+  </div>
+
+  <h2>Result card</h2>
+  <div class="card">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--on-surface-variant);margin-bottom:var(--md)">PLAIN-ENGLISH SUMMARY</div>
+    <div class="finding">
+      <div class="row"><span style="flex:1">This link uses HTTP, not HTTPS — anything you send is unencrypted.</span><span class="w">+2</span></div>
+      <span class="link">See details</span>
+      <div class="detail">Rule 1: HTTP scheme detected. No transport encryption.</div>
+    </div>
+    <div class="finding">
+      <div class="row"><span style="flex:1">This domain closely resembles “paypal” (83% similar) — likely a typosquatting attempt.</span><span class="w">+3</span></div>
+      <span class="link">See details</span>
+    </div>
+    <div class="url" style="margin-top:var(--lg)">https://paypa1.com/login</div>
+  </div>
+
+  <h2>History chip</h2>
+  <div class="card">
+    <span class="pill" style="background:var(--error-container);color:var(--error)">HIGH RISK · score 8</span>
+    <span class="pill" style="background:var(--warning-container);color:var(--warning)">SUSPICIOUS · score 5</span>
+    <span class="pill" style="background:var(--success-container);color:var(--success)">SAFE · score 0</span>
+  </div>
+
+  <h2>Do</h2>
+  <div class="card"><ul class="dos">
+    <li>Use green, amber and red only to communicate a scan verdict.</li>
+    <li>Render every URL and rule output in the monospace stack.</li>
+    <li>Pair every verdict colour with an icon and a text label.</li>
+    <li>Keep plain English visible by default, technical detail one tap away.</li>
+    <li>Let cards breathe — 16px padding minimum, even when it costs a scroll.</li>
+  </ul></div>
+
+  <h2>Don't</h2>
+  <div class="card"><ul class="donts">
+    <li>Don't make a scanned URL tappable. The app explains links; it never opens them.</li>
+    <li>Don't add shadows, glows, or pulsing borders to convey risk.</li>
+    <li>Don't use accent green for a disabled, neutral, or decorative element.</li>
+    <li>Don't write a finding that could apply to any URL — name the pattern detected.</li>
+    <li>Don't introduce a second accent hue.</li>
+    <li>Don't set body copy in a verdict colour.</li>
+  </ul></div>
+</div>
+</body>
+</html>
