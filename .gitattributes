@@ -1,0 +1,7 @@
+# Vendored OpenCV.js. Keep it byte-for-byte as published — it embeds the WASM
+# payload, and letting git rewrite line endings on a vendored binary-ish
+# artifact is a corruption risk for no benefit.
+web/opencv.js -text
+
+# Generated from tool/parity_corpus.json; keep diffs readable.
+test/url_scorer_test.dart text eol=lf

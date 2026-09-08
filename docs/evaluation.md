@@ -112,3 +112,41 @@ the plain-English finding does name the actual pattern detected.
   Phase 2, and real Android hardware.
 - **Scoring time in isolation** — expected well under the 10ms budget, since
   scoring is a pure function over a short string, but unmeasured.
+
+## QR decoder parity — OpenCV.js vs the Python prototype
+
+The web build decodes with the OpenCV.js WASM build rather than native OpenCV,
+because native `dartcv4` cannot run in a browser and the web build is the only
+route onto an iPhone without Mac access. That makes decoder agreement a
+question worth answering rather than assuming.
+
+Both were run over the five QR fixtures in `scan-safe/scansafe/assets/images`,
+using the same four-stage fallback (original, greyscale, Otsu, inverted Otsu):
+
+| Fixture | Python prototype | OpenCV.js | Agree |
+|---|---|---|---|
+| `test_qr_safe.png` | `https://www.google.com` | same | yes |
+| `test_qr_suspicious.png` | `https://paypa1.com/login` | same | yes |
+| `test_qr_highrisk.png` | `http://secure-login.xyz/verify?user=admin` | same | yes |
+| `test_qr_blob.png` | `blob:https://outlook.office.com/02573e0c-...` | same | yes |
+| `qr_mal_2fa.png` | no QR found | no QR found | yes |
+
+**5/5 agreement, including the shared failure.** `qr_mal_2fa.png` defeats all
+four stages in both implementations, so it is a genuinely hard sample rather
+than a web-specific regression. It is the obvious candidate for a fifth
+preprocessing stage — adaptive thresholding, or the perspective-corrected
+`detectAndDecodeCurved` path — if decode coverage becomes a research target.
+
+### In-browser decode timings
+
+Measured in Chrome on the release build, at the natural fixture resolutions:
+
+| Fixture | Stage that succeeded | Time |
+|---|---|---|
+| `test_qr_blob.png` | 1 (original frame) | 67ms |
+| `test_qr_suspicious.png` | 1 (original frame) | 111ms |
+| `qr_mal_2fa.png` | all four exhausted | 135ms |
+
+The camera pump runs at 5fps (200ms budget). Even the worst case — all four
+stages failing — fits inside one frame, so decoding never backs up. OpenCV.js
+itself loads in ~600ms locally, once, and only when the scanner is opened.

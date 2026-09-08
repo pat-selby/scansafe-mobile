@@ -8,20 +8,25 @@ AIoT Lab at Grambling State University.
 
 ## Status
 
-**28 of 51 roadmap tasks complete.** Phases 0 and 1 are done and verified; Phase 2
-(camera + OpenCV decode) is next and is no longer blocked.
+**36 of 52 roadmap tasks complete.** Phases 0 and 1 are done and verified; Phase 2
+(camera + OpenCV decode) has shipped for the web; the native decoder is next.
 
 | Layer | What it does | Status |
 |---|---|---|
-| 1–3 | Camera, OpenCV pipeline, QR decode | Interface only — Phase 2 |
+| 1–3 | Camera, OpenCV pipeline, QR decode | **Done on web** (OpenCV.js); native is TASK-052 |
 | 4 | 22-rule URL risk scoring | **Done**, parity-verified |
 | 5 | Verdict + dual-layer findings | **Done** |
 | 6 | Local scan history | **Done** |
 | 7 | Agentic investigation | Out of scope for this release |
 
-What works today: paste or type a link, get a SAFE / SUSPICIOUS / HIGH RISK verdict with
-plain-English reasoning and technical detail behind a toggle, saved to local history that
-never leaves the device.
+What works today: **scan a QR code with the camera** (web build), or paste a link, and get
+a SAFE / SUSPICIOUS / HIGH RISK verdict with plain-English reasoning and technical detail
+behind a toggle, saved to local history that never leaves the device.
+
+Camera scanning currently runs on the **web build only**, decoding with the OpenCV.js WASM
+build. Native Android and iOS still show the scan button disabled — `dartcv4` is TASK-052.
+The web path exists because it is the only way onto an iPhone without Mac access; it decodes
+identically to the Python prototype on all five QR fixtures (see `docs/evaluation.md`).
 
 ## Running it
 
@@ -37,7 +42,7 @@ flutter test
 flutter run -d chrome
 ```
 
-76 tests run, including 41 parity cases against the Python research prototype.
+100 tests run, including 41 parity cases against the Python research prototype.
 
 Web is a development preview surface only — Android and iOS are the release targets.
 

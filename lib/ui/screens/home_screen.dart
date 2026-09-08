@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/payload_kind.dart';
+import '../../core/scanner/platform_scanner.dart';
 import '../../core/url_scorer.dart';
 import '../../data/scan_history_store.dart';
 import '../theme.dart';
@@ -7,13 +9,15 @@ import '../widgets/dashed_button.dart';
 import '../widgets/section_label.dart';
 import 'history_screen.dart';
 import 'result_screen.dart';
+import 'scan_screen.dart';
 
 /// Entry point for a scan.
 ///
-/// Manual URL entry is the fallback path and works today. Camera scanning is
-/// the primary path and lands in Phase 2 — its button is present and visibly
-/// disabled rather than hidden, so the app's shape matches the architecture
-/// and nobody wonders whether the feature exists.
+/// Camera scanning is the primary path; typing a link is the fallback. The
+/// scan button is only enabled where a decoder exists (`scannerSupported`) —
+/// on the web that is the OpenCV.js WASM build. On platforms without one it
+/// stays visibly disabled rather than hidden, so the app's shape matches the
+/// architecture and nobody wonders whether the feature exists.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.store});
 
@@ -46,7 +50,69 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
     setState(() => _error = null);
+    await _scoreAndShow(input);
+  }
 
+  /// Open the camera, and score whatever it decodes.
+  ///
+  /// The scan screen only returns a payload; scoring stays here so a typed
+  /// link and a scanned one take exactly the same path, including history.
+  Future<void> _scanQr() async {
+    final payload = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (_) => const ScanScreen()),
+    );
+    if (payload == null || !mounted) return;
+
+    // A QR code is not necessarily a link. Scoring a Wi-Fi join or a contact
+    // card as a URL would produce a confident, meaningless verdict.
+    if (!looksLikeUrl(payload)) {
+      await _showNotALink(payload);
+      return;
+    }
+    await _scoreAndShow(payload);
+  }
+
+  Future<void> _showNotALink(String payload) async {
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("That code wasn't a link"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'It contained ${describePayload(payload)}, so there is no link '
+              'to check. ScanSafe only rates links.',
+              style: AppType.body,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: Text(
+                payload.length > 200 ? '${payload.substring(0, 200)}...' : payload,
+                style: AppType.monoDetail,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _scoreAndShow(String input) async {
     final result = _scorer.score(input);
     await widget.store.add(result);
 
@@ -120,15 +186,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: AppSpacing.md),
 
-          const DashedButton(
+          DashedButton(
             icon: Icons.qr_code_scanner,
             label: 'Scan a QR code',
-            // Enabled in Phase 2, once the OpenCV decoder lands.
-            onPressed: null,
+            onPressed: scannerSupported ? _scanQr : null,
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            'Camera scanning arrives in the next build.',
+            scannerSupported
+                ? 'Decoded on your device with OpenCV. Nothing is uploaded.'
+                : 'Camera scanning is not wired up on this platform yet.',
             textAlign: TextAlign.center,
             style: AppType.bodyMuted,
           ),
