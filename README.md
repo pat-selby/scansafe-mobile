@@ -8,8 +8,8 @@ AIoT Lab at Grambling State University.
 
 ## Status
 
-**27 of 51 roadmap tasks complete.** Phases 0 and 1 are done and verified; Phase 2
-(camera + OpenCV decode) is next and is blocked on one machine-setup step.
+**28 of 51 roadmap tasks complete.** Phases 0 and 1 are done and verified; Phase 2
+(camera + OpenCV decode) is next and is no longer blocked.
 
 | Layer | What it does | Status |
 |---|---|---|
@@ -40,14 +40,24 @@ flutter run -d chrome
 76 tests run, including 41 parity cases against the Python research prototype.
 
 Web is a development preview surface only — Android and iOS are the release targets.
-Android device builds need one setup step first:
+
+To run on the Android emulator:
 
 ```bash
-flutter doctor --android-licenses
+flutter emulators --launch Medium_Phone_API_36.1
 ```
 
-If that fails, install the Android SDK command-line tools via Android Studio's SDK
-Manager, then run it again. This is TASK-025 and it blocks the whole camera phase.
+```bash
+flutter run -d emulator-5554
+```
+
+`flutter doctor` reports missing `cmdline-tools`. That is **not** a build blocker — it only
+provides `sdkmanager`/`avdmanager` for installing SDK components. The licence is already
+accepted and the needed platforms and build-tools are installed, so `flutter build apk`
+works. Install it when convenient to get a clean doctor report.
+
+Note: `adb exec-out screencap` returns a stale framebuffer on this emulator. Verify the UI
+in the emulator window itself.
 
 ## The parity contract
 
