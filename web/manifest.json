@@ -1,11 +1,11 @@
 {
-    "name": "scansafe",
-    "short_name": "scansafe",
+    "name": "ScanSafe",
+    "short_name": "ScanSafe",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "description": "Checks where a QR code really goes before you open it, entirely on your device. 22-rule on-device phishing detection with no network calls.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
