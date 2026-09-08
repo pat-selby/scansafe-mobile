@@ -1,0 +1,39 @@
+name: iOS build check
+
+# Development happens on Windows, where the iOS target cannot be compiled at
+# all — Xcode is macOS-only. Without this job, iOS-specific breakage would sit
+# undetected until someone borrows a Mac, which could be weeks.
+#
+# This does not sign, package, or ship anything. It only answers one question
+# on every push: does the iOS target still compile?
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.3
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # --no-codesign skips signing certificates and provisioning profiles,
+      # which are only needed to run on hardware or submit to App Store
+      # Connect. Compilation is what we are checking here.
+      - name: Build iOS (unsigned)
+        run: flutter build ios --no-codesign --release
+
+      - name: Report app bundle size
+        run: du -sh build/ios/iphoneos/Runner.app
